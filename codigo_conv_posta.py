@@ -21,22 +21,41 @@ for i in range(6):
 print(n) 
 print(type(n)) 
 #n.reverse()  
-q=q=[0]*len(n)+[0,0]
+q=[0]*len(n)+[0,0]
 z=[]
 
 for i in range(len(n)):                          #me invierte el q
     q=np.insert(q,0,n[i])
     q=np.delete(q,len(q)-1)
-    g0=[5,6,7]
-    g1=[4,5,6]
-    g2=[3,4,5]
-    g3=[2,3,4] 
-    g4=[1,2,3]
-    g5=[0,1,2]
+g0=[5,6,7]
+g1=[4,5,6]
+g2=[3,4,5]
+g3=[2,3,4] 
+g4=[1,2,3]
+g5=[0,1,2]
     
-    
-  
-    
+
+def codificar_conv_1_3_3(xs,g1=[1,0,0],g2=[1,0,1],g3=[1,1,1]):
+    """
+    Codifica una secuencia de entrada xs[0]..xs[n] con un código convolucional (1,2,3)
+    retorna ys donde:
+    ys[3k]   = xs[k]*g1[0] + xs[k-1]*g1[1] + xs[k-2]*g1[2]  Suma módulo dos
+    ys[3k+1] = xs[k]*g2[0] + xs[k-1]*g2[1] + xs[k-2]*g2[2]  Suma módulo dos
+    ys[3k+2] = xs[k]*g3[0] + xs[k-1]*g3[1] + xs[k-2]*g3[2]  Suma módulo dos
+    """
+    r1 = 0 # registros
+    r2 = 0
+    r3 = 0
+    ys = []
+    for x in xs:
+        r3 = r2
+        r2 = r1
+        r1 = x
+        ys.append((r1 & g1[0]) ^ (r2 & g1[1]) ^ (r3 & g1[2]))
+        ys.append((r1 & g2[0]) ^ (r2 & g2[1]) ^ (r3 & g2[2]))
+        ys.append((r1 & g3[0]) ^ (r2 & g3[1]) ^ (r3 & g3[2]))
+    return ys
+
 print("codificacion de: ",n)   # primer bit es el menos significativo  
 #print(q)
 
@@ -51,7 +70,8 @@ z4=np.take(q,g4)
 z5=np.take(q,g5)
 
 def concatenar(a,b):
-	return a^b         #or exclusivo bit a bit de a y b.
+    "or exclusivo bit a bit de a y b."
+    return a^b
 
 #suma el numero binario de los 3 bits 
 
@@ -143,4 +163,5 @@ z = [np.int64(k) for k in z]
 
 print("la salida es: ",z)
 print(type(z))
-
+print(codificar_conv_1_3_3(n))
+assert all((u == v for u,v in zip(z,codificar_conv_1_3_3(n))))
