@@ -6,36 +6,17 @@ from numpy import binary_repr
 import sys    #para terminar el codigo cuando es verdadero
 # maximo bit de entrada debe ser hasta 6
 
-try:
-    while True:
-    
-        n=[ ]
-        for i in range(6):
-        
-            n.append(int(input("ingresar un bit de entrada (1 o 0): ")))      # n.append agrega lo ingresado por consola al vector n
-            
-        if n[i] != 1 or n[i] != 0 :
-            print("numero correcto")
-            break
-
-            
-        
-        else:
-            print("numero incorrecto solo pueden ser '0' o '1' ")
-        
-
-            sys.exit()
-   
-            break
-            
-            
-
-    
-except  (ValueError,TypeError):
-    print("solo se permiten numeros '0' o '1' ")
-    sys.exit()
-
-
+n=[ ]
+for i in range(6):
+    a = input("ingresar un bit de entrada (1 o 0): ")
+    a = a.strip()
+    if a == "0":
+        n.append(0)
+    elif a == "1":
+        n.append(1) 
+    else:
+        print("numero incorrecto solo pueden ser '0' o '1' ")
+        sys.exit()
    
 print(n) 
 print(type(n)) 
